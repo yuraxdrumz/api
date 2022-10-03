@@ -20,6 +20,9 @@ syntax = "proto3";
 package ipam;
 option go_package = "github.com/networkservicemesh/api/pkg/api/ipam";
 
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+
 
 enum Type {
   UNDEFINED = 0;
@@ -40,4 +43,52 @@ message PrefixResponse {
 
 service IPAM  {
   rpc ManagePrefixes (stream PrefixRequest) returns (stream PrefixResponse);
+}
+
+message NetworkServiceLabels {
+    map<string, string> labels = 1;
+}
+
+message Endpoint {
+    Type type = 1;
+    string name = 2;
+    string prefix = 3;
+    repeated string network_service_names = 4;
+    map<string, NetworkServiceLabels> network_service_labels = 5;
+    string url = 6;
+    google.protobuf.Timestamp expiration_time = 7;
+    google.protobuf.Timestamp initial_registration_time = 8;
+    repeated string exclude_prefixes = 9;
+}
+
+message RegisterEndpointResponse {
+  string name = 2;
+  string prefix = 3;
+  google.protobuf.Timestamp expiration_time = 4;
+  repeated string exclude_prefixes = 5;
+}
+
+message Client {
+  string id = 1;
+  string name = 2;
+  string prefix = 3;
+  repeated string network_service_names = 4;
+  map<string, NetworkServiceLabels> network_service_labels = 5;
+  string url = 6;
+  google.protobuf.Timestamp expiration_time = 7;
+  google.protobuf.Timestamp initial_registration_time = 8;
+  repeated string exclude_prefixes = 9;
+}
+
+// Endpoint -> RegisterEndpoint -> IPAM -> return CIDR
+// Client -> Endpoint -> RegisterClient -> IPAM -> return IP from CIDR
+// Client -> Endpoint -> RegisterClient -> IPAM -> IP exists, expiration is valid, update expiration
+// Client -> Endpoint -> RegisterClient -> IPAM -> IP exists, expiration passed, call .Close()?
+// CLient -> Endpoint -> UnregisterClient -> IPAM -> release IP from CIDR
+// Endpoint -> UnregisterEndpoint -> release CIDR
+service IPAMV2 {
+  rpc RegisterEndpoint (Endpoint) returns (Endpoint);
+  rpc RegisterClient (Client) returns (Client);
+  rpc UnregisterEndpoint (Endpoint) returns (google.protobuf.Empty);
+  rpc UnregisterClient (Client) returns (google.protobuf.Empty);
 }
