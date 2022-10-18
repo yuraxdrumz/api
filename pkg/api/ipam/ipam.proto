@@ -78,8 +78,8 @@ message Client {
   google.protobuf.Timestamp expiration_time = 7;
   google.protobuf.Timestamp initial_registration_time = 8;
   repeated string exclude_prefixes = 9;
-  string src_address = 10;
-  string dst_address = 11;
+  repeated string src_address = 10;
+  repeated string dst_address = 11;
 }
 
 // Endpoint -> RegisterEndpoint -> IPAM -> return CIDR
