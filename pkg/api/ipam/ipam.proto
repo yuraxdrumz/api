@@ -59,6 +59,7 @@ message Endpoint {
     google.protobuf.Timestamp expiration_time = 7;
     google.protobuf.Timestamp initial_registration_time = 8;
     repeated string exclude_prefixes = 9;
+    bool unique_cidr = 10;
 }
 
 message RegisterEndpointResponse {
