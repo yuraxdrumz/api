@@ -81,6 +81,7 @@ message Client {
   repeated string exclude_prefixes = 9;
   repeated string src_address = 10;
   repeated string dst_address = 11;
+  string endpoint_name = 12;
 }
 
 // Endpoint -> RegisterEndpoint -> IPAM -> return CIDR
