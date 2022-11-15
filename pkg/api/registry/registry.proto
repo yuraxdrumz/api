@@ -50,6 +50,7 @@ service NetworkServiceEndpointRegistry {
 service NetworkServiceRegistry {
     rpc Register (NetworkService) returns (NetworkService);
     rpc Find (NetworkServiceQuery) returns (stream NetworkServiceResponse);
+    rpc FindNetworkServicesByLabels(NetworkServicesQueryByLabels) returns (NetworkServicesResponse);
     rpc Unregister (NetworkService) returns (google.protobuf.Empty);
 }
 
