@@ -10,6 +10,7 @@ message NetworkService {
     string name = 1;
     string payload = 2;
     repeated Match matches = 3;
+    map<string, NetworkServiceLabels> network_service_labels = 4;
 }
 
 message Match {
@@ -50,22 +51,12 @@ service NetworkServiceEndpointRegistry {
 service NetworkServiceRegistry {
     rpc Register (NetworkService) returns (NetworkService);
     rpc Find (NetworkServiceQuery) returns (stream NetworkServiceResponse);
-    rpc FindNetworkServicesByLabels(NetworkServicesQueryByLabels) returns (NetworkServicesResponse);
     rpc Unregister (NetworkService) returns (google.protobuf.Empty);
 }
 
 message NetworkServiceQuery {
     NetworkService network_service = 1;
     bool watch = 2;
-}
-
-message NetworkServicesQueryByLabels {
-   map<string, NetworkServiceLabels> network_service_labels = 1;
-   string name = 2;
-}
-
-message NetworkServicesResponse {
-   repeated NetworkService network_services = 1;
 }
 
 message NetworkServiceEndpointQuery {
