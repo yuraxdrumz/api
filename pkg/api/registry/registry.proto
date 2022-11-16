@@ -61,6 +61,7 @@ message NetworkServiceQuery {
 
 message NetworkServicesQueryByLabels {
    map<string, NetworkServiceLabels> network_service_labels = 1;
+   string name = 2;
 }
 
 message NetworkServicesResponse {
