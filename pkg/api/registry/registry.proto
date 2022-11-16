@@ -10,7 +10,6 @@ message NetworkService {
     string name = 1;
     string payload = 2;
     repeated Match matches = 3;
-    map<string, NetworkServiceLabels> network_service_labels = 4;
 }
 
 message Match {
@@ -57,6 +56,7 @@ service NetworkServiceRegistry {
 message NetworkServiceQuery {
     NetworkService network_service = 1;
     bool watch = 2;
+    map<string, NetworkServiceLabels> network_service_labels = 3;
 }
 
 message NetworkServiceEndpointQuery {
