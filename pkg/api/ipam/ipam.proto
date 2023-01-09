@@ -62,6 +62,24 @@ message Endpoint {
     bool unique_cidr = 10;
 }
 
+message RegisterEndpointV3 {
+    string name = 1;
+    string component_id = 2;
+    string component_type = 3;
+    string pool = 4;
+    repeated string network_service_names = 5;
+    bool unique_cidr = 6;
+    repeated string allocated_prefixes = 7;
+    repeated string excluded_prefixes = 8;
+}
+
+message UnregisterEndpointV3 {
+    oneof identifier {
+      string name = 1;
+      string component_id = 2;
+    }
+}
+
 message RegisterEndpointResponse {
   string name = 2;
   string prefix = 3;
@@ -94,5 +112,12 @@ service IPAMV2 {
   rpc RegisterEndpoint (Endpoint) returns (Endpoint);
   rpc RegisterClient (Client) returns (Client);
   rpc UnregisterEndpoint (Endpoint) returns (google.protobuf.Empty);
+  rpc UnregisterClient (Client) returns (google.protobuf.Empty);
+}
+
+service IPAMV3 {
+  rpc RegisterEndpoint (RegisterEndpointV3) returns (RegisterEndpointV3);
+  rpc RegisterClient (Client) returns (Client);
+  rpc UnregisterEndpoint (UnregisterEndpointV3) returns (google.protobuf.Empty);
   rpc UnregisterClient (Client) returns (google.protobuf.Empty);
 }
